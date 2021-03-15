@@ -45,33 +45,19 @@ This is a discord bot made using the lastest discord.py api as of march 2021. Th
 ## Commands
 
 ```
-m.add [url]
+m.add [url]                        This adds the music to queue
 
-This adds the music to queue
+m.play [VoiceChannel(optional)]    This command plays music in the desired channel or by default in General
 
-m.play [VoiceChannel(optional)]
+m.songs                            Lists all the songs in the playlist
 
-This command plays music in the desired channel or by default in General
+m.volume [integer value]           Sets the volume level
 
-m.songs
+m.stop                             Stops the music player
 
-Lists all the songs in the playlist
+m.clear_playlist                   Removes every song from the playlist
 
-m.volume [integer value]
-
-Sets the volume level
-
-m.stop
-
-Stops the music player
-
-m.clear_playlist
-
-Removes every song from the playlist
-
-m.remove [index from the list of songs provided by typing m.songs]**
-
-Removes the particular song
+m.remove [index from the list]**   Removes the particular song
 ```
 
 ## Contributing
