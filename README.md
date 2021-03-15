@@ -1,4 +1,4 @@
-# Discord_Music_bot
+# Live_Discord_music_bot
 <p align="left">
 <a href="https://github.com/DivyaKumarBaid/Live_Discord_music_bot/blob/main/LICENSE" alt="Lisence"><img src="https://img.shields.io/github/license/DivyaKumarBaid/Live_Discord_music_bot"></a> <a href="https://github.com/DivyaKumarBaid/Live_Discord_music_bot/issues" alt="Issues"><img src="https://img.shields.io/github/issues/DivyaKumarBaid/Live_Discord_music_bot"></a> <a href="https://twitter.com/DivyakumarBaid1?s=09" alt="Twiter-Follow"><img src="https://img.shields.io/twitter/url?url=https%3A%2F%2Fgithub.com%2FDivyaKumarBaid%2FDiscord_Music_bot"></a>
 </p>
@@ -81,3 +81,6 @@ Please make sure to update tests as appropriate.
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
+
+## Note:
+I have similar bot that downloads music and then play. If you dont have problem for space and downloading time you may have a look to my repo from [here](https://github.com/DivyaKumarBaid/Discord_Music_bot)
