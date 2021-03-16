@@ -11,7 +11,7 @@ from itertools import cycle
 
 client = commands.Bot(command_prefix='m.',help_command=None)
 song_played=[]
-song_url=["https://www.youtube.com/watch?v=jrTMMG0zJyI","https://www.youtube.com/watch?v=jipGjSq4Plg&t=51s"]
+song_url=[]
 
 #before running install pip install pynacl
 #for audio pip install ffmpeg
