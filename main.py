@@ -16,11 +16,11 @@ song_url=[]
 #before running install pip install pynacl
 #for audio pip install ffmpeg
 
-FFMPEG_OPTIONS = {'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5', 'options': '-vn'}
+FFMPEG_OPTIONS = {'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5', 'options': '-vn'} #locking options for ffmpeg
 
 
-#infinite loop to play music 24X7 untill closed/stopped
-@tasks.loop(seconds=10)
+#infinite loop to play music 24X7 untill closed/stopped 
+@tasks.loop(seconds=20)
 async def play_song(ctx, ch, channel,l):
   voice = discord.utils.get(client.voice_clients, guild=ctx.guild) 
   global song_url
