@@ -41,6 +41,8 @@ This is a discord bot made using the lastest discord.py api as of march 2021. Th
 9. Go to [Uptimerobot](https://uptimerobot.com/) and create a monitor and paste the copied ``url`` and start the monitor.This will keep the bot alive even after you close it.
 
     For more precise steps have a look at [FreeCodeCamp](https://www.freecodecamp.org/news/create-a-discord-bot-with-python/)
+    
+You can also host this bot on heroku.
 
 ## Commands
 
