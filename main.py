@@ -1,3 +1,4 @@
+import os
 from keep_alive import keep_alive
 import discord
 import nacl
@@ -7,7 +8,10 @@ import youtube_dl
 import discord.utils
 from discord.ext import commands, tasks
 from itertools import cycle
+from youtubesearchpython import VideosSearch
+from youtube_search import YoutubeSearch
 
+my_secret = os.environ['TOKEN']
 
 client = commands.Bot(command_prefix='m.',help_command=None)
 song_played=[]
@@ -111,18 +115,27 @@ async def play(ctx, channel='General'):
 
 #add music
 @client.command(help='youtube link is required', brief='This adds a music to the playlist. The url must be of youtube')
-async def add(ctx, urllink :str):
+async def add(ctx, * ,searched_song):
+  print(searched_song)
+  
+  videosSearch = VideosSearch(searched_song, limit = 1)
+  result_song_list = videosSearch.result()
+  # print(result_song_list)
+  title_song = result_song_list['result'][0]['title']
+  urllink = result_song_list['result'][0]['link']
+
   song_url.append(urllink)
   text = discord.Embed(
   title= "**Song Added**",
-  url= urllink,
-  description = "Song is added to the Queue",
+  description = f"{title_song} is added to the Queue\nLink : {urllink}",
   color= 53380,
   )
+  # text.add_image(url=f"{result_song_list['result'][0]['thumbnail']['url']}")
   text.set_author(name= "Discord_music_bot",
   icon_url= "https://static.vecteezy.com/system/resources/thumbnails/000/371/212/small/1781.jpg")
   text.set_footer(text= "m.help to know commands")
   await ctx.send(embed=text)
+  # await ctx.send(f"LINK : {urllink} ADDED")
   
 
 #leave vc and stop playing
@@ -146,8 +159,12 @@ async def songs(ctx):
   if(l==0):
     await ctx.send("No music to play")
   for i in range(0,l):
+      videosSearch = VideosSearch(song_url[i], limit = 1)
+      result_song_list = videosSearch.result()
+      # print(result_song_list)
+      title_song = result_song_list['result'][0]['title']
       text = discord.Embed(
-      description = f"{i+1}# Song Name : {song_url[i]} ",
+      description = f"{i+1}# Song Name : {title_song} ",
       color= 53380,
       )
       text.set_author(name= "Discord_music_bot",
@@ -179,7 +196,10 @@ async def clear(ctx, amount=5):
 @client.command(help='The file name should be wiht mp3 extension' , brief='This command removes the specified file')
 async def remove(ctx,x: int):
   x=x-1
-  text= embedding("Song Removed")
+  videosSearch = VideosSearch(song_url[x], limit = 1)
+  result_song_list = videosSearch.result()
+  title_song = result_song_list['result'][0]['title']
+  text= embedding(f"{title_song} Removed")
   await ctx.send(embed=text)
   song_url.pop(x)
 
@@ -221,4 +241,4 @@ async def on_command_error(ctx, error):
 keep_alive() #this keeps the bot alive
 
 #runs bot
-client.run(os.getenv('TOKEN'))
+client.run(my_secret) #token from env
