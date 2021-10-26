@@ -3,7 +3,7 @@
 <a href="https://github.com/DivyaKumarBaid/Live_Discord_music_bot/blob/main/LICENSE" alt="Lisence"><img src="https://img.shields.io/github/license/DivyaKumarBaid/Live_Discord_music_bot"></a> <a href="https://github.com/DivyaKumarBaid/Live_Discord_music_bot/issues" alt="Issues"><img src="https://img.shields.io/github/issues/DivyaKumarBaid/Live_Discord_music_bot"></a> <a href="https://twitter.com/DivyakumarBaid1?s=09" alt="Twiter-Follow"><img src="https://img.shields.io/twitter/url?url=https%3A%2F%2Fgithub.com%2FDivyaKumarBaid%2FDiscord_Music_bot"></a>
 </p>
 
-This is a simple Discord Music bot that plays music 24/7 looping thorugh the ```URL```  from youtube.
+This is a simple Discord Music bot that plays music 24/7 looping thorugh the ```URL or Name```  from youtube.
 To run this bot we need to several packages such as PyNaCl, discord.py, youtube-dl
 
 ## Installation
