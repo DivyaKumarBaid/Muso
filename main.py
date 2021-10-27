@@ -15,6 +15,7 @@ from pymongo import MongoClient
 
 my_secret = os.environ['TOKEN']
 
+last_vol=[]
 client = commands.Bot(command_prefix='m.',help_command=None)
 song_played=[]
 song_url=[]
@@ -49,7 +50,9 @@ async def play_song(ctx, ch, channel,l):
         info = ydl.extract_info(url, download=False)
         video_title = info.get('title', None)
         URL = info['formats'][0]['url']
-      ch.play(discord.FFmpegPCMAudio(URL, **FFMPEG_OPTIONS))
+        
+      ch.play(discord.PCMVolumeTransformer(discord.FFmpegPCMAudio(URL, **FFMPEG_OPTIONS)))
+      voice.source.volume = last_vol[0]
       text = embedding(f" Playing :{video_title}")
       await ctx.send(embed=text, delete_after=60.0)
       song_played.append(song_url[0])
@@ -72,6 +75,7 @@ async def skip(ctx):
 @client.event
 async def on_ready():
   print("I am alive")
+  last_vol.append(100.0)
   await client.change_presence(
         status=discord.Status.online,
         activity=discord.Game('Music. To know more type m.help'))
@@ -80,19 +84,23 @@ async def on_ready():
 #sets volume to user defined value and this needs to be refined
 @client.command()
 async def volume(ctx, x: int):
-  y=x/100
-  vc = discord.utils.get(client.voice_clients, guild=ctx.guild)
-  vc.source = discord.PCMVolumeTransformer(vc.source)
-  vc.source.volume = y
-  text = discord.Embed(
-  title= "**Volume Control**",
-  description = f" Volume set to {int(x)} ",
-  color= 53380,
-  )
-  text.set_author(name= "Discord_music_bot",
-  icon_url= "https://img.icons8.com/color/48/000000/phonograph.png")
-  text.set_footer(text= "m.help to know commands")
-  await ctx.send(embed=text)
+  if 0 <= x <= 100:
+    y=x/100.0
+    last_vol.pop(0)
+    last_vol.append(y)
+    vc = discord.utils.get(client.voice_clients, guild=ctx.guild)
+    vc.source.volume = float(y)
+    text = discord.Embed(
+    title= "**Volume Control**",
+    description = f" Volume set to {int(x)} ",
+    color= 53380,
+    )
+    text.set_author(name= "Discord_music_bot",
+    icon_url= "https://img.icons8.com/color/48/000000/phonograph.png")
+    text.set_footer(text= "m.help to know commands")
+    await ctx.send(embed=text)
+  else:
+    await ctx.send("Volume level must be between 0 to 100")
 
 
 #play command to start an infinite loop
@@ -128,7 +136,6 @@ async def play(ctx, channel='General'):
     text.set_footer(text= "m.help to know commands")
     await ctx.send(embed=text)
     
-
 
 #add music
 @client.command(help='youtube link is required', brief='This adds a music to the playlist. The url must be of youtube')
@@ -174,8 +181,10 @@ async def stop(ctx):
 async def play_this(ctx,*,name,channel="General"):
     voice = discord.utils.get(client.voice_clients, guild=ctx.guild) 
     channel = discord.utils.get(ctx.guild.voice_channels, name=channel)
-    if len(chvc)==0:
+    if len(chvc)==0 and voice == None:
       ch = await channel.connect()
+      chvc.clear()
+      chvc.append(ch)
     else :
       ch=chvc[0]
       ch.stop()
@@ -195,7 +204,7 @@ async def play_this(ctx,*,name,channel="General"):
         info = ydl.extract_info(urllink, download=False)
         video_title = info.get('title', None)
         URL = info['formats'][0]['url']
-      ch.play(discord.FFmpegPCMAudio(URL, **FFMPEG_OPTIONS))
+      ch.play(discord.PCMVolumeTransformer(discord.FFmpegPCMAudio(URL, **FFMPEG_OPTIONS)))
       text = embedding(f" Playing :{video_title}")
       await ctx.send(embed=text, delete_after=60.0)
       
