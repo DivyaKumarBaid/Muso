@@ -10,6 +10,8 @@ from discord.ext import commands, tasks
 from itertools import cycle
 from youtubesearchpython import VideosSearch
 from lyrics import *
+from pymongo import MongoClient
+
 
 my_secret = os.environ['TOKEN']
 
@@ -146,8 +148,9 @@ async def add(ctx, * ,searched_song):
   title_song = result_song_list['result'][0]['title']
   urllink = result_song_list['result'][0]['link']
 
-  song_url.append(urllink)
-  playlist.append(urllink)
+  if(not urllink in playlist):
+    playlist.append(urllink)
+    song_url.append(urllink)
   text = discord.Embed(
   title= "**Song Added**",
   description = f"{title_song} is added to the Queue\nLink : {urllink}",
