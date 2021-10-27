@@ -10,8 +10,6 @@ from discord.ext import commands, tasks
 from itertools import cycle
 from youtubesearchpython import VideosSearch
 from lyrics import *
-from pymongo import MongoClient
-
 
 my_secret = os.environ['TOKEN']
 
@@ -278,7 +276,7 @@ async def help(ctx):
   text = discord.Embed(
   title= "**HELP TAB**",
   url= "https://github.com/DivyaKumarBaid/Discord_Music_bot",
-  description = "***Welcome to Help Tab. Below are definations and how to use commands section*** \n\n**m.add [url]/[name] ** => This adds the music to queue \n\n**m.play [VoiceChannel(optional)]** => This command plays music in the desired channel or by default in General\n\n**m.songs**  =>  Lists all the songs in the playlist\n\n**m.volume [integer value]** => Sets the volume level\n\n**m.stop** => Stops the music player\n\n**m.clear_playlist** => Removes every song from the playlist\n\n**m.remove [index from the list of songs provided by typing m.songs]** => Removes the particular song\n\n",
+  description = "***Welcome to Help Tab. Below are definations and how to use commands section*** \n\n**m.add [url]/[name] ** => This adds the music to queue \n\n**m.play_this [Name]/[URL]** => This command plays that given particular song and stops the loop. \n\n**m.play [VoiceChannel(optional)]** => This command plays music in the desired channel or by default in General\n\n**m.songs**  =>  Lists all the songs in the playlist\n\n**m.volume [integer value]** => Sets the volume level\n\n**m.stop** => Stops the music player\n\n**m.clear_playlist** => Removes every song from the playlist\n\n**m.remove [index from the list of songs provided by typing m.songs]** => Removes the particular song\n\n",
   color= 53380,
   )
   text.set_author(name= "Discord_music_bot",
