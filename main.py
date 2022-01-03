@@ -3,30 +3,74 @@ from keep_alive import keep_alive
 import discord
 import nacl
 from discord import FFmpegPCMAudio
-import os
 import youtube_dl
 import discord.utils
+from discord.utils import find
 from discord.ext import commands, tasks
 from itertools import cycle
 from youtubesearchpython import VideosSearch
-# from lyrics import *
-from pymongo import MongoClient
+import numpy as np
 
+#initializing variables
 
 my_secret = os.environ['TOKEN']
 
-last_vol=[]
 client = commands.Bot(command_prefix='m.',help_command=None)
+
+last_vol=[]
+
 song_played=[]
+
 song_url=[]
-playlist=[]
+
 chvc=[]
 
+#initializing variables
+
+
+# For accessing already created playlist if present
+
+if (os.path.exists('playlist.txt')):
+  playlist_ini = np.loadtxt('playlist.txt' , dtype=str , delimiter = '\n')
+  playlist_ini = playlist_ini.tolist()
+
+  if(type(playlist_ini)!=list):
+    playlist = []
+    playlist.append(playlist_ini)
+  else:
+    playlist = playlist_ini
+
+else:
+  f = open("playlist.txt", "x")
+  f.close()
+  playlist = []
+
+
+# For accessing already created playlist if present
+
+
+# ffmpeg
 #before running install pip install pynacl
 #for audio pip install ffmpeg
-
 FFMPEG_OPTIONS = {'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5', 'options': '-vn'} #locking options for ffmpeg
 
+
+#when bot is ready
+@client.event
+async def on_ready():
+  print("I am alive")
+  last_vol.append(100.0)
+  await client.change_presence(
+        status=discord.Status.online,
+        activity=discord.Game('Music. To know more type m.help'))
+
+@client.event
+async def on_guild_join(guild):
+    general = find(lambda x: x.name == 'general',  guild.text_channels)
+    if general and general.permissions_for(guild.me).send_messages:
+        await general.send('Hello {}!'.format(guild.name))
+
+# removes any duplicate songs that is currently in the playlist
 def duplicate():
   res = []
   for i in playlist:
@@ -35,14 +79,19 @@ def duplicate():
   playlist.clear()
   for i in res:
     playlist.append(i)
+# removes any duplicate songs that is currently in the playlist
 
 
 #infinite loop to play music 24X7 untill closed/stopped 
 @tasks.loop(seconds=5)
 async def play_song(ctx, ch, channel,l):
+
   voice = discord.utils.get(client.voice_clients, guild=ctx.guild) 
-  global song_url
+  
+  # global song_url
+  
   url=song_url[0]
+  
   if not ch.is_playing() and not voice == None :
     try: 
       ydl_opts = {'format': 'bestaudio/best'}
@@ -71,14 +120,6 @@ async def skip(ctx):
   ch=chvc[0]
   ch.stop()
 
-#when bot is ready
-@client.event
-async def on_ready():
-  print("I am alive")
-  last_vol.append(100.0)
-  await client.change_presence(
-        status=discord.Status.online,
-        activity=discord.Game('Music. To know more type m.help'))
 
 
 #sets volume to user defined value and this needs to be refined
@@ -107,6 +148,7 @@ async def volume(ctx, x: int):
 @client.command(help="Channel name is optional." , brief="This command plays song from the available ones.Providing channel name is optional without which it will play on General")
 async def play(ctx, channel='General'):
  #joining the desired channel
+
   voice = discord.utils.get(client.voice_clients, guild=ctx.guild) 
   channel = discord.utils.get(ctx.guild.voice_channels, name=channel)
   if voice == None:
@@ -141,12 +183,13 @@ async def play(ctx, channel='General'):
 @client.command(help='youtube link is required', brief='This adds a music to the playlist. The url must be of youtube')
 async def add(ctx, * ,searched_song):
   # print(searched_song)
-
   videosSearch = VideosSearch(searched_song, limit = 1)
   result_song_list = videosSearch.result()
 
   title_song = result_song_list['result'][0]['title']
   urllink = result_song_list['result'][0]['link']
+  thumbnail = result_song_list['result'][0]['thumbnails'][0]['url']
+  # print(thumbnail)
 
   if(not urllink in playlist):
     playlist.append(urllink)
@@ -157,9 +200,16 @@ async def add(ctx, * ,searched_song):
   color= 53380,
   )
   # text.add_image(url=f"{result_song_list['result'][0]['thumbnail']['url']}")
+  text.set_image(url = thumbnail)
   text.set_author(name= "Discord_music_bot",
   icon_url= "https://img.icons8.com/color/48/000000/phonograph.png")
   text.set_footer(text= "m.help to know commands")
+
+  np.savetxt('playlist.txt',playlist , fmt = '%s')
+
+  content = np.loadtxt('playlist.txt' , dtype=str , delimiter = '\n') 
+  content = content.tolist()
+  
   await ctx.send(embed=text)
   
 
@@ -190,8 +240,6 @@ async def play_this(ctx,*,name,channel="General"):
       ch=chvc[0]
       ch.stop()
     play_song.stop()
-    # for i in range(0,len(song_played)):
-    #   song_url.append(song_played[i])
 
     videosSearch = VideosSearch(name, limit = 1)
     result_song_list = videosSearch.result()
@@ -216,7 +264,9 @@ async def play_this(ctx,*,name,channel="General"):
 #lists song
 @client.command(help="This shows the songs present in the directory" ,brief='This command lists all the songs available to play')
 async def songs(ctx):
+  print(playlist)
   l=len(playlist)
+  print(l)
   if(l==0):
     await ctx.send("No music to play")
   for i in range(0,l):
@@ -237,6 +287,9 @@ async def songs(ctx):
 async def clear_playlist(ctx):
   song_url.clear()
   playlist.clear()
+
+  np.savetxt('playlist.txt',playlist , fmt = '%s')
+  
   text= discord.Embed(
   description="**Playlist cleared**",
   color = 53380,
@@ -272,6 +325,9 @@ async def remove(ctx,x: int):
       break;
 
   song_url.pop(x)
+
+  np.savetxt('playlist.txt',playlist , fmt = '%s')
+
 
 #custom help command
 @client.group(invoke_without_command=True)
