@@ -9,7 +9,7 @@ import discord.utils
 from discord.ext import commands, tasks
 from itertools import cycle
 from youtubesearchpython import VideosSearch
-from lyrics import *
+# from lyrics import *
 from pymongo import MongoClient
 
 
