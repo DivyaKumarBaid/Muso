@@ -22,6 +22,11 @@ To install youtube_dl
 ```bash
 pip install youtube_dl
 ```
+To install youtube-search-python
+```bash
+pip install youtube-search-python
+```
+
 You also need to install [FFmpeg](https://www.ffmpeg.org/) 
 
 ## Pre-Text:
