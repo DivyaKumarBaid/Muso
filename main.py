@@ -21,9 +21,24 @@ last_vol=[]
 
 song_played=[]
 
+chvc=[]
+
 song_url=[]
 
-chvc=[]
+voice_channel_to_connect=[]
+
+command_dict = {
+  "m.add [url]/[name]" : "Adds given music to queue",
+  "m.songs" : "Lists all the songs in the playlist",
+  "m.skip" : "Skips the Currently Playing Song",
+  "m.play [VoiceChannel]" : "This command plays music in the desired channel",
+  "m.play_this [Name]/[URL]" : "Plays a particular song",
+  "m.stop" : "Stops the music player",
+  "m.remove [index]" : "Removes the particular song at that index",
+  "m.clear_playlist" : "Removes every song from the playlist",
+  "m.volume [integer value]" : "Sets the volume level",
+  "m.playOn [VoiceChannel]" : "Sets the Voice Channel on which bot plays"
+}
 
 #initializing variables
 
@@ -45,9 +60,12 @@ else:
   f.close()
   playlist = []
 
+for i in playlist:
+  song_url.append(i)
+# print(song_url)
+
 
 # For accessing already created playlist if present
-
 
 # ffmpeg
 #before running install pip install pynacl
@@ -64,11 +82,25 @@ async def on_ready():
         status=discord.Status.online,
         activity=discord.Game('Music. To know more type m.help'))
 
+
+#when it is first added to a server
 @client.event
 async def on_guild_join(guild):
     general = find(lambda x: x.name == 'general',  guild.text_channels)
     if general and general.permissions_for(guild.me).send_messages:
-        await general.send('Hello {}!'.format(guild.name))
+        text = discord.Embed(
+          title = f'Hello **{guild.name}**!\n',
+          url = "https://github.com/DivyaKumarBaid/Discord_music_bot_V-2",
+          description = f'Nice to you all.\nTo setup this bot you just need to set the voice channel to play the song by typing m.playOn <channel_name> and add your song by m.add <song_name> and just m.play to play on your channel\nFor more info type m.help',
+          color= 53380,
+        )
+        text.set_author(name= "Discord_music_bot",
+        icon_url= "https://img.icons8.com/color/48/000000/phonograph.png")
+        text.set_footer(text= "Title would redirect you to the source code of this bot on GITHUB")
+
+        await general.send(embed=text)
+
+
 
 # removes any duplicate songs that is currently in the playlist
 def duplicate():
@@ -88,8 +120,14 @@ async def play_song(ctx, ch, channel,l):
 
   voice = discord.utils.get(client.voice_clients, guild=ctx.guild) 
   
-  # global song_url
-  
+  # print(song_url)
+
+  if len(song_url) == 0:
+    duplicate()
+    for i in playlist:
+      song_url.append(i)
+    song_played.clear()
+
   url=song_url[0]
   
   if not ch.is_playing() and not voice == None :
@@ -108,18 +146,26 @@ async def play_song(ctx, ch, channel,l):
       song_url.pop(0)
     except:
       await ctx.send("Connection Error!!")
-  if len(song_url) == 0:
-    duplicate()
-    for i in playlist:
-      song_url.append(i)
-    song_played.clear()
+
   
+
+#sets the bot to play on a particular channel
+@client.command()
+async def playOn(ctx,*,channel):
+  channel = discord.utils.get(ctx.guild.voice_channels, name=channel)
+  if(channel is not None):
+    voice_channel_to_connect.clear()
+    voice_channel_to_connect.append(channel)
+    await ctx.send(f"{channel} is now set to play it Loud ! ")
+  else:
+    await ctx.send("**Couldnt Find the Channel**")
+
+
 #skip a song
 @client.command(help= "Skip the current song")
 async def skip(ctx):
   ch=chvc[0]
   ch.stop()
-
 
 
 #sets volume to user defined value and this needs to be refined
@@ -146,11 +192,23 @@ async def volume(ctx, x: int):
 
 #play command to start an infinite loop
 @client.command(help="Channel name is optional." , brief="This command plays song from the available ones.Providing channel name is optional without which it will play on General")
-async def play(ctx, channel='General'):
+async def play(ctx, channel = None):
  #joining the desired channel
 
-  voice = discord.utils.get(client.voice_clients, guild=ctx.guild) 
+  voice = discord.utils.get(client.voice_clients, guild=ctx.guild)
+
   channel = discord.utils.get(ctx.guild.voice_channels, name=channel)
+
+  if channel is None:
+    if(len(voice_channel_to_connect) == 0):
+      await ctx.send(f"Couldnt the channel you told to join please set the channel using m.voice_channel <channel_name> or just pass it as argument in this command")
+      return
+
+    else:
+      channel = voice_channel_to_connect[0]
+
+
+  #checking if it is playing any audio
   if voice == None:
     await ctx.send(f"Joined **{channel}**")
   else:
@@ -182,31 +240,32 @@ async def play(ctx, channel='General'):
 #add music
 @client.command(help='youtube link is required', brief='This adds a music to the playlist. The url must be of youtube')
 async def add(ctx, * ,searched_song):
-  # print(searched_song)
+
   videosSearch = VideosSearch(searched_song, limit = 1)
   result_song_list = videosSearch.result()
 
   title_song = result_song_list['result'][0]['title']
   urllink = result_song_list['result'][0]['link']
   thumbnail = result_song_list['result'][0]['thumbnails'][0]['url']
-  # print(thumbnail)
+
 
   if(not urllink in playlist):
     playlist.append(urllink)
     song_url.append(urllink)
+
+
   text = discord.Embed(
   title= "**Song Added**",
   description = f"{title_song} is added to the Queue\nLink : {urllink}",
   color= 53380,
   )
-  # text.add_image(url=f"{result_song_list['result'][0]['thumbnail']['url']}")
   text.set_image(url = thumbnail)
   text.set_author(name= "Discord_music_bot",
   icon_url= "https://img.icons8.com/color/48/000000/phonograph.png")
   text.set_footer(text= "m.help to know commands")
 
+  duplicate()
   np.savetxt('playlist.txt',playlist , fmt = '%s')
-
   content = np.loadtxt('playlist.txt' , dtype=str , delimiter = '\n') 
   content = content.tolist()
   
@@ -228,6 +287,7 @@ async def stop(ctx):
     await ctx.send("Have left the channel")
 
 
+#plays a particular music
 @client.command(help = "This stops the loop of playing song and plays the mentioned named song instead")
 async def play_this(ctx,*,name,channel="General"):
     voice = discord.utils.get(client.voice_clients, guild=ctx.guild) 
@@ -264,9 +324,7 @@ async def play_this(ctx,*,name,channel="General"):
 #lists song
 @client.command(help="This shows the songs present in the directory" ,brief='This command lists all the songs available to play')
 async def songs(ctx):
-  print(playlist)
   l=len(playlist)
-  print(l)
   if(l==0):
     await ctx.send("No music to play")
   for i in range(0,l):
@@ -335,9 +393,12 @@ async def help(ctx):
   text = discord.Embed(
   title= "**HELP TAB**",
   url= "https://github.com/DivyaKumarBaid/Discord_Music_bot",
-  description = "***Welcome to Help Tab. Below are definations and how to use commands section*** \n\n**m.add [url]/[name] ** => This adds the music to queue \n\n**m.play_this [Name]/[URL]** => This command plays that given particular song and stops the loop. \n\n**m.play [VoiceChannel(optional)]** => This command plays music in the desired channel or by default in General\n\n**m.songs**  =>  Lists all the songs in the playlist\n\n**m.volume [integer value]** => Sets the volume level\n\n**m.stop** => Stops the music player\n\n**m.clear_playlist** => Removes every song from the playlist\n\n**m.remove [index from the list of songs provided by typing m.songs]** => Removes the particular song\n\n",
   color= 53380,
   )
+  for x in command_dict : 
+    des_cmd = command_dict[x]+'\n'
+    text.add_field(name = x , value = des_cmd,inline = True)
+    # text.add_field(name = '\n', value = "\n")
   text.set_author(name= "Discord_music_bot",
   icon_url= "https://img.icons8.com/color/48/000000/phonograph.png")
   text.set_footer(text= "m.help to know commands")
