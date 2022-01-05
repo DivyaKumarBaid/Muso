@@ -96,7 +96,7 @@ async def on_guild_join(guild):
         )
         text.set_author(name= "Discord_music_bot",
         icon_url= "https://img.icons8.com/color/48/000000/phonograph.png")
-        text.set_footer(text= "Title would redirect you to the source code of this bot on GITHUB")
+        text.set_footer(text= "m.help to know commands")
 
         await general.send(embed=text)
 
@@ -236,6 +236,50 @@ async def play(ctx, channel = None):
     text.set_footer(text= "m.help to know commands")
     await ctx.send(embed=text)
     
+    
+#plays a particular music
+@client.command(help = "This stops the loop of playing song and plays the mentioned named song instead")
+async def play_this(ctx,channel = None,*,name):
+    voice = discord.utils.get(client.voice_clients, guild=ctx.guild) 
+    channel = discord.utils.get(ctx.guild.voice_channels, name=channel)
+
+    if channel is None:
+      if(len(voice_channel_to_connect) == 0):
+        await ctx.send(f"Couldnt the channel you told to join please set the channel using m.voice_channel <channel_name> or just pass it as argument in this command")
+        return
+
+      else:
+        channel = voice_channel_to_connect[0]
+
+    if len(chvc)==0 and voice == None:
+      ch = await channel.connect()
+      chvc.clear()
+      chvc.append(ch)
+    else :
+      ch=chvc[0]
+      ch.stop()
+    play_song.stop()
+
+    videosSearch = VideosSearch(name, limit = 1)
+    result_song_list = videosSearch.result()
+
+    title_song = result_song_list['result'][0]['title']
+    urllink = result_song_list['result'][0]['link']
+    
+    try: 
+      ydl_opts = {'format': 'bestaudio/best'}
+      with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+        info = ydl.extract_info(urllink, download=False)
+        video_title = info.get('title', None)
+        URL = info['formats'][0]['url']
+      ch.play(discord.PCMVolumeTransformer(discord.FFmpegPCMAudio(URL, **FFMPEG_OPTIONS)))
+      text = embedding(f" Playing :{video_title}")
+      await ctx.send(embed=text, delete_after=60.0)
+      
+    except:
+      await ctx.send("Connection Error !!! ",delete_after=60.0)
+
+
 
 #add music
 @client.command(help='youtube link is required', brief='This adds a music to the playlist. The url must be of youtube')
@@ -285,40 +329,6 @@ async def stop(ctx):
       song_url.append(i)
     song_played.clear()
     await ctx.send("Have left the channel")
-
-
-#plays a particular music
-@client.command(help = "This stops the loop of playing song and plays the mentioned named song instead")
-async def play_this(ctx,*,name,channel="General"):
-    voice = discord.utils.get(client.voice_clients, guild=ctx.guild) 
-    channel = discord.utils.get(ctx.guild.voice_channels, name=channel)
-    if len(chvc)==0 and voice == None:
-      ch = await channel.connect()
-      chvc.clear()
-      chvc.append(ch)
-    else :
-      ch=chvc[0]
-      ch.stop()
-    play_song.stop()
-
-    videosSearch = VideosSearch(name, limit = 1)
-    result_song_list = videosSearch.result()
-
-    title_song = result_song_list['result'][0]['title']
-    urllink = result_song_list['result'][0]['link']
-    
-    try: 
-      ydl_opts = {'format': 'bestaudio/best'}
-      with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-        info = ydl.extract_info(urllink, download=False)
-        video_title = info.get('title', None)
-        URL = info['formats'][0]['url']
-      ch.play(discord.PCMVolumeTransformer(discord.FFmpegPCMAudio(URL, **FFMPEG_OPTIONS)))
-      text = embedding(f" Playing :{video_title}")
-      await ctx.send(embed=text, delete_after=60.0)
-      
-    except:
-      await ctx.send("Connection Error !!! ",delete_after=60.0)
 
 
 #lists song
