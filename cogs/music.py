@@ -1,6 +1,3 @@
-from ast import alias
-from dis import disco
-from tkinter import Variable
 import discord
 import os
 import nacl
