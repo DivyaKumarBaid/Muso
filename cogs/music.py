@@ -25,8 +25,8 @@ class Music(commands.Cog):
         self.song_url = []
         self.voice_channel_to_connect = []
         self.playlist = []
-        self.logo_url = "https://img.icons8.com/color/48/000000/phonograph.png"
-        self.name = "Discord_music_bot"
+        self.logo_url = "https://i.postimg.cc/sftbMRQQ/Asset-3.png"
+        self.name = "Orches"
 
         self.ydl_options = {
             'format': 'bestaudio/best'
@@ -151,12 +151,12 @@ class Music(commands.Cog):
         else:
             text = discord.Embed(
                 title="**No Music**",
-                description="There is no music to play\nUse _add [url] to add a music",
+                description="There is no music to play\n\nUse m.add [url] to add a music",
 
             )
             text.set_author(name="Discord_Music_bot",
                             icon_url=self.logo_url)
-            text.set_footer(text="m.help to know commands")
+            text.set_footer(text="\nm.help to know commands")
             await ctx.send(embed=text)
 
     @commands.command(help='Set the Default Voice Channel')
@@ -165,7 +165,7 @@ class Music(commands.Cog):
         if(channel is not None):
             self.voice_channel_to_connect.clear()
             self.voice_channel_to_connect.append(channel)
-            await ctx.send(f"{channel} is now set to play it Loud ! ")
+            await ctx.send(embed=discord.Embed(description=f"{channel} is now set to play it Loud !"))
         else:
             await ctx.send("**Couldnt Find the Channel**")
 
