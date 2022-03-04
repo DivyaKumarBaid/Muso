@@ -1,0 +1,6 @@
+youtube_dl
+youtube-search-python
+discord.py
+PyNaCl
+ffmpeg
+numpy
