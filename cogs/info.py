@@ -35,18 +35,13 @@ class Info(commands.Cog):
                 description=f'Nice to you all.\nTo setup this bot you just need to set the voice channel to play the song by typing m.playOn <channel_name> and add your song by m.add <song_name> and just m.play to play on your channel\nFor more info type m.help',
                 color=53380,
             )
-            text.set_author(name="Orches",
-                            icon_url="https://i.postimg.cc/tCJGxzDw/Asset-3.png")
-            text.set_image(url="https://i.postimg.cc/tCJGxzDw/Asset-2.png")
+            text.set_author(name="Muso",
+                            icon_url="https://i.postimg.cc/MTWgJN6P/mini.png")
+            text.set_image(url="https://i.postimg.cc/MTWgJN6P/banner.png")
             text.set_footer(text="m.help to know commands")
             await general.send(embed=text)
 
     # commands within a cog
-
-    @commands.command()
-    async def ping(self, ctx):
-        await ctx.send("Pong!")
-
     # custom help command
 
     @ commands.group(invoke_without_command=True)
@@ -59,8 +54,8 @@ class Info(commands.Cog):
         for x in self.command_dict:
             des_cmd = self.command_dict[x]+'\n'
             text.add_field(name=x, value=des_cmd, inline=True)
-        text.set_author(name="Discord_music_bot",
-                        icon_url="https://img.icons8.com/color/48/000000/phonograph.png")
+        text.set_author(name="Muso",
+                        icon_url="https://i.postimg.cc/MTWgJN6P/mini.png")
         text.set_footer(text="m.help to know commands")
         await ctx.send(embed=text)
 

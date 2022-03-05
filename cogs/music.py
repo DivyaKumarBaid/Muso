@@ -25,8 +25,8 @@ class Music(commands.Cog):
         self.song_url = []
         self.voice_channel_to_connect = []
         self.playlist = []
-        self.logo_url = "https://i.postimg.cc/sftbMRQQ/Asset-3.png"
-        self.name = "Orches"
+        self.logo_url = "https://i.postimg.cc/MTWgJN6P/mini.png"
+        self.name = "Muso"
 
         self.ydl_options = {
             'format': 'bestaudio/best'
