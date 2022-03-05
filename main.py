@@ -5,7 +5,7 @@ from discord.utils import find
 
 
 # initialising client of the bot
-client = commands.Bot(command_prefix='s.', help_command=None)
+client = commands.Bot(command_prefix='m.', help_command=None)
 
 # token obtained from the discord dev portal
 my_secret = os.environ.get('TOKEN')
@@ -38,7 +38,7 @@ async def on_guild_join(guild):
         )
         text.set_author(name="Muso",
                         icon_url="https://i.postimg.cc/MTWgJN6P/mini.png")
-        text.set_image(url="https://i.postimg.cc/MTWgJN6P/banner.png")
+        text.set_image(url="https://i.postimg.cc/s2Pb8srG/banner.png")
         text.set_footer(text="m.help to know commands")
         await general.send(embed=text)
 
