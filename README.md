@@ -18,8 +18,8 @@ A simple but efficient Music Bot that plays your favourite music in a loop so ju
 
 ---
 
-<h1 align = "center">
-Commands
+<span align = "center">
+## Commands
 
 | m.add              | Adds music to the bots playlist.                       |
 | ------------------ | ------------------------------------------------------ |
@@ -32,4 +32,4 @@ Commands
 | m.playOn <Channel> | Set the Default Voice Channel on which Bot would play. |
 | m.songs            | List the songs present in the Queue.                   |
 
-## </h1>
+</span>
