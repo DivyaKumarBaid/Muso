@@ -25,21 +25,7 @@ class Info(commands.Cog):
 
     # event within a cog
     # function decorator
-    @commands.Cog.listener()
-    async def on_guild_join(guild):
-        general = find(lambda x: x.name == 'general',  guild.text_channels)
-        if general and general.permissions_for(guild.me).send_messages:
-            text = discord.Embed(
-                title=f'Hello **{guild.name}**!\n',
-                url="https://github.com/DivyaKumarBaid/Orches",
-                description=f'Nice to you all.\nTo setup this bot you just need to set the voice channel to play the song by typing m.playOn <channel_name> and add your song by m.add <song_name> and just m.play to play on your channel\nFor more info type m.help',
-                color=53380,
-            )
-            text.set_author(name="Muso",
-                            icon_url="https://i.postimg.cc/MTWgJN6P/mini.png")
-            text.set_image(url="https://i.postimg.cc/MTWgJN6P/banner.png")
-            text.set_footer(text="m.help to know commands")
-            await general.send(embed=text)
+    # @commands.Cog.listener()
 
     # commands within a cog
     # custom help command

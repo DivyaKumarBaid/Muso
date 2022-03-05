@@ -154,7 +154,7 @@ class Music(commands.Cog):
                 description="There is no music to play\n\nUse m.add [url] to add a music",
 
             )
-            text.set_author(name="Discord_Music_bot",
+            text.set_author(name=self.name,
                             icon_url=self.logo_url)
             text.set_footer(text="\nm.help to know commands")
             await ctx.send(embed=text)
