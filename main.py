@@ -33,7 +33,7 @@ async def on_guild_join(guild):
         text = discord.Embed(
             title=f'Hello **{guild.name}**!\n',
             url="https://github.com/DivyaKumarBaid",
-            description=f'Nice to you all.\nTo setup this bot you just need to set the voice channel to play the song by typing m.playOn <channel_name> and add your song by m.add <song_name> and just m.play to play on your channel\nFor more info type m.help',
+            description=f'**Nice to you all**.\n\nTo setup this bot you just need to set the voice channel to play the song by typing **m.playOn <channel_name>** and add your song by **m.add <song_name>** and just m.play to play on your channel\n\nFor more info type **m.help**',
             color=53380,
         )
         text.set_author(name="Muso",
