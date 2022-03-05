@@ -10,7 +10,8 @@
 
 </span>
 
-<h2 align="center"> DESCRIPTION </h2>
+## Description
+
 A simple but efficient Music Bot that plays your favourite music in a loop so just add a playlist and chill listening it playing for you.
 
 <br>
@@ -34,3 +35,35 @@ A simple but efficient Music Bot that plays your favourite music in a loop so ju
 | m.songs            | List the songs present in the Queue.                   |
 
 </span>
+
+---
+
+## Forking and Hosting
+
+This music bot is now hosted on heroku and works well on repl also.
+
+For using it on heroku
+Fork this repository and then under Deploy in heroku add your this forked repo
+Under setting - buildpack add
+
+> heroku/python
+> https://github.com/jonathanong/heroku-buildpack-ffmpeg-latest.git >https://github.com/xrisk/heroku-opus.git
+
+In setting - config vars add
+
+> Key - Token
+> and in value add your discord bots generated Token (For more info go through Youtube Videos)
+
+And then under resources enable worker.
+
+**TADA Your Bot is now online**
+
+For using in on other platforms make sure you install requirements.txt
+
+```
+    pip install -r requirements.txt
+```
+
+---
+
+For any other Questions raise an issue and I will try to solve you problem.
