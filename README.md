@@ -47,7 +47,9 @@ Fork this repository and then under Deploy in heroku add your this forked repo
 Under setting - buildpack add
 
 > heroku/python
+
 > https://github.com/jonathanong/heroku-buildpack-ffmpeg-latest.git
+
 > https://github.com/xrisk/heroku-opus.git
 
 In setting - config vars add
