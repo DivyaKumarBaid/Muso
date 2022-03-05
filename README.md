@@ -2,13 +2,13 @@
 
 <h1 align="center"> 
   
-  <br>
+<br>
     
-    Muso
-    <br>
-    <small>A Friendly Neighbourhood Discord Music Player </small>
+Muso
+<br>
+<small>A Friendly Neighbourhood Discord Music Player </small>
 
-  <br>
+<br>
 
 [![GitHub license](https://img.shields.io/github/license/DivyaKumarBaid/Muso?color=e63946&logo=Big%20Cartel&logoColor=white&style=for-the-badge)](https://github.com/DivyaKumarBaid/Muso/blob/main/LICENSE)[![GitHub forks](https://img.shields.io/github/forks/DivyaKumarBaid/Muso?logo=JFrog%20Bintray&logoColor=white&style=for-the-badge)](https://github.com/DivyaKumarBaid/Muso/network)[![GitHub stars](https://img.shields.io/github/stars/DivyaKumarBaid/Muso?color=%23ffcb77&logo=Apache%20Spark&logoColor=yellow&style=for-the-badge)](https://github.com/DivyaKumarBaid/Muso/stargazers)
 
