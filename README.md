@@ -18,8 +18,9 @@ A simple but efficient Music Bot that plays your favourite music in a loop so ju
 
 ---
 
-<span align = "center">
 ## Commands
+
+<span align = "center">
 
 | m.add              | Adds music to the bots playlist.                       |
 | ------------------ | ------------------------------------------------------ |
