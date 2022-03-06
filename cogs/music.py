@@ -302,7 +302,7 @@ class Music(commands.Cog):
         videosSearch = VideosSearch(self.playlist[x], limit=1)
         result_song_list = videosSearch.result()
         title_song = result_song_list['result'][0]['title']
-        text = discord.Embed(f"{title_song} Removed")
+        text = discord.Embed(description=f"{title_song} Removed")
         await ctx.send(embed=text)
 
         pos = 0
