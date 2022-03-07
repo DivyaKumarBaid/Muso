@@ -20,7 +20,8 @@ class Info(commands.Cog):
             "m.remove [index]": "Removes the particular song at that index",
             "m.clear_playlist": "Removes every song from the playlist",
             "m.volume [integer value]": "Sets the volume level",
-            "m.playOn [VoiceChannel]": "Sets the Voice Channel on which bot plays"
+            "m.playOn [VoiceChannel]": "Sets the Voice Channel on which bot plays",
+            "m.playing_now": "Shows the Song currently playing"
         }
 
     # event within a cog

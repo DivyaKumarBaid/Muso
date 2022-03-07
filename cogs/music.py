@@ -6,6 +6,7 @@ from discord.utils import find
 from discord import FFmpegPCMAudio
 from discord.ext import commands, tasks
 import numpy as np
+from pandas import describe_option
 import youtube_dl
 from youtubesearchpython import VideosSearch
 
@@ -27,6 +28,7 @@ class Music(commands.Cog):
         self.playlist = []
         self.logo_url = "https://i.postimg.cc/MTWgJN6P/mini.png"
         self.name = "Muso"
+        self.currentsong = "Not playing"
 
         self.ydl_options = {
             'format': 'bestaudio/best'
@@ -93,6 +95,7 @@ class Music(commands.Cog):
                 with youtube_dl.YoutubeDL(self.ydl_options) as ydl:
                     info = ydl.extract_info(url, download=False)
                     video_title = info.get('title', None)
+                    self.currentsong = video_title
                     URL = info['formats'][0]['url']
 
                 ch.play(discord.PCMVolumeTransformer(
@@ -239,6 +242,7 @@ class Music(commands.Cog):
         await ctx.voice_client.disconnect()
         self.play_song.stop()
         self.song_url.clear()
+        self.currentsong = "Not playing"
         self.song_played.clear()
         for i in self.playlist:
             self.song_url.append(i)
@@ -246,7 +250,7 @@ class Music(commands.Cog):
 
     # lists song
 
-    @ commands.command(help="This shows the songs present in the directory", aliases=["list"], brief='This command lists all the songs available to play')
+    @ commands.command(help="This shows the songs present in the directory", aliases=["list", "playlist", "queue"], brief='This command lists all the songs available to play')
     async def songs(self, ctx):
         l = len(self.playlist)
 
@@ -273,7 +277,7 @@ class Music(commands.Cog):
 
     # clears playlist
 
-    @ commands.command(help='The file name should be wiht mp3 extension', brief='This command removes every0 available song')
+    @ commands.command(help='The file name should be wiht mp3 extension', brief='This command removes every available song')
     async def clear_playlist(self, ctx):
         self.song_url.clear()
         self.playlist.clear()
@@ -315,6 +319,11 @@ class Music(commands.Cog):
         self.playlist.pop(x)
 
         np.savetxt('playlist.txt', self.playlist, fmt='%s')
+
+    @commands.command(brief='shows the current song', aliases=["now", "playing_now", "current_song"])
+    async def current(self, ctx):
+        text = discord.Embed(description=f"{self.currentsong}")
+        await ctx.send(embed=text)
 
 
 def setup(client):
