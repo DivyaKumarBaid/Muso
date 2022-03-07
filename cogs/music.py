@@ -6,7 +6,6 @@ from discord.utils import find
 from discord import FFmpegPCMAudio
 from discord.ext import commands, tasks
 import numpy as np
-from pandas import describe_option
 import youtube_dl
 from youtubesearchpython import VideosSearch
 
