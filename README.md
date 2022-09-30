@@ -40,6 +40,9 @@ A simple but efficient Music Bot that plays your favourite music in a loop so ju
 
 ## Forking and Hosting
 
+This bot needs discord developer portals token.
+You would also need to set Privileged Gateway Intents.
+
 This music bot is now hosted on heroku and works well on repl also.
 
 For using it on heroku
