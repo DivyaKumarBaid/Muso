@@ -325,5 +325,5 @@ class Music(commands.Cog):
         await ctx.send(embed=text)
 
 
-def setup(client):
-    client.add_cog(Music(client))
+async def setup(client):
+    await client.add_cog(Music(client))

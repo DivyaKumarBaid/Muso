@@ -2,18 +2,29 @@ import discord
 import os
 from discord.ext import commands, tasks
 from discord.utils import find
+from dotenv import load_dotenv
+import asyncio
+import logging
 
+load_dotenv()
 
-# initialising client of the bot
-client = commands.Bot(command_prefix='m.', help_command=None)
+intents=discord.Intents.all()
+intents.members = True
 
-# token obtained from the discord dev portal
-my_secret = os.environ.get('TOKEN')
+handler = logging.FileHandler(filename='discord.log', encoding='utf-8', mode='w')
 
-# loads any cogs present
-for filename in os.listdir('./cogs'):
-    if filename.endswith('.py'):
-        client.load_extension(f'cogs.{filename[:-3]}')
+client = commands.Bot(command_prefix='m.', help_command=None,intents=intents)
+
+async def main():
+    my_secret = os.getenv('TOKEN')
+    await load_extensions()
+    await client.start(token=my_secret)
+
+async def load_extensions():
+    # loads any cogs present
+    for filename in os.listdir('./cogs'):
+        if filename.endswith('.py'):
+            await client.load_extension(f'cogs.{filename[:-3]}')
 
 
 # when bot is ready and online
@@ -78,4 +89,5 @@ async def on_command_error(ctx, error):
 
 
 # runs the particular bot
-client.run(my_secret)
+# asyncio.run(main())
+asyncio.run(main())
