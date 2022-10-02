@@ -4,14 +4,12 @@ from discord.ext import commands, tasks
 from discord.utils import find
 from dotenv import load_dotenv
 import asyncio
-import logging
 
 load_dotenv()
 
 intents=discord.Intents.all()
 intents.members = True
 
-handler = logging.FileHandler(filename='discord.log', encoding='utf-8', mode='w')
 
 client = commands.Bot(command_prefix='m.', help_command=None,intents=intents)
 
