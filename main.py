@@ -5,6 +5,7 @@ from discord.utils import find
 from dotenv import load_dotenv
 import asyncio
 
+#importing environmental variables
 load_dotenv()
 
 intents=discord.Intents.all()
@@ -52,8 +53,6 @@ async def on_guild_join(guild):
         await general.send(embed=text)
 
 # commands that loads the cog files
-
-
 @client.command()
 async def load(ctx):
     for filename in os.listdir('./cogs'):
@@ -74,8 +73,6 @@ async def reload(ctx):
             client.load_extension(f'cogs.{filename[:-3]}')
 
 # checks for errors
-
-
 @ client.event
 async def on_command_error(ctx, error):
     if isinstance(error, commands.CommandNotFound):
