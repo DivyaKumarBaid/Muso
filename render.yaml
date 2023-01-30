@@ -1,0 +1,6 @@
+services:
+  - type: worker
+    env: python
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "uvicorn main:app"
+    autoDeploy: false
