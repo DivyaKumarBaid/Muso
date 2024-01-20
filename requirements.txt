@@ -3,5 +3,5 @@ youtube-search-python
 discord.py
 PyNaCl
 ffmpeg
-numpy==1.21.1
+numpy
 python-dotenv
