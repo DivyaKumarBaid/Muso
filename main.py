@@ -16,21 +16,21 @@ client = commands.Bot(command_prefix='m.', help_command=None,intents=intents)
 
 async def main():
     my_secret = os.getenv('TOKEN')
-    load_extensions()
-    client.start(token=my_secret)
+    await load_extensions()
+    await client.start(token=my_secret)
 
 async def load_extensions():
     # loads any cogs present
     for filename in os.listdir('./cogs'):
         if filename.endswith('.py'):
-            client.load_extension(f'cogs.{filename[:-3]}')
+            await client.load_extension(f'cogs.{filename[:-3]}')
 
 
 # when bot is ready and online
 @client.event
 async def on_ready():
     print("I am alive")
-    client.change_presence(
+    await client.change_presence(
         status=discord.Status.online,
         activity=discord.Game('Music. To know more type m.help'))
 
