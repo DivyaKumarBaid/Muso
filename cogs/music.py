@@ -6,7 +6,7 @@ from discord.utils import find
 from discord import FFmpegPCMAudio
 from discord.ext import commands, tasks
 import numpy as np
-import youtube_dl
+import yt_dlp as youtube_dl
 from youtubesearchpython import VideosSearch
 
 # inside a class we have to pass self

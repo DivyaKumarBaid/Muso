@@ -1,4 +1,4 @@
-youtube_dl
+yt_dlp
 youtube-search-python
 discord.py
 PyNaCl
